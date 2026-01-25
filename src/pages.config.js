@@ -4,6 +4,8 @@ import CourseDetails from './pages/CourseDetails';
 import Learn from './pages/Learn';
 import MyLearning from './pages/MyLearning';
 import InstructorDashboard from './pages/InstructorDashboard';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 
 
 export const PAGES = {
@@ -13,6 +15,8 @@ export const PAGES = {
     "Learn": Learn,
     "MyLearning": MyLearning,
     "InstructorDashboard": InstructorDashboard,
+    "Profile": Profile,
+    "AdminDashboard": AdminDashboard,
 }
 
 export const pagesConfig = {
