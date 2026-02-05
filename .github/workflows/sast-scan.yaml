@@ -1,40 +1,40 @@
-# name: SAST Scan
+name: SAST Scan
 
-# on:
-#   push:
-#     branches: [ main, prince ]
-#   pull_request:
-#     branches: [ main ]
-#   workflow_dispatch:
+on:
+  push:
+    branches: [ main, prince ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
 
-# jobs:
-#   security:
-#     name: SonarQube + Snyk Scan
-#     runs-on: ubuntu-latest
+jobs:
+  security:
+    name: SonarQube + Snyk Scan
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-#       - name: Setup Node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-#       - name: Install Dependencies
-#         run: npm ci
+      - name: Install Dependencies
+        run: npm ci
 
-#       # ----------------------------
-#       # SONARQUBE SCAN
-#       # ----------------------------
-#       - name: SonarQube Scan
-#         uses: SonarSource/sonarqube-scan-action@v6
-#         with:
-#           projectBaseDir: .
-#         env:
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
-#           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+      # ----------------------------
+      # SONARQUBE SCAN
+      # ----------------------------
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
 
 #       # ----------------------------
 #       # SNYK SAST + DEP SCAN
@@ -51,26 +51,39 @@
 #       - name: Snyk Dependency Scan
 #         run: snyk test --severity-threshold=high
 
-name: SAST Scan - Sonarqube
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-  workflow_dispatch:
+# name: SAST Scan - Sonarqube
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+#   workflow_dispatch:
     
-jobs:
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+# jobs:
+#   sonarqube:
+#     name: SonarQube
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+#       # - name: SonarQube Scan
+#       #   uses: SonarSource/sonarqube-scan-action@v6
+#       #   env:
+#       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#       #     SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
+#       #     SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+
+#       - name: SonarCloud Scan
+#         uses: SonarSource/sonarcloud-github-action@v2
+#         with:
+#           projectBaseDir: .
+#           args: >
+#             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+#             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
+#           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+
