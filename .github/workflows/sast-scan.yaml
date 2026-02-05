@@ -28,7 +28,7 @@ jobs:
       # SONARQUBE SCAN
       # ----------------------------
       - name: SonarQube Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           projectBaseDir: .
         env:
