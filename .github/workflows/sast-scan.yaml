@@ -1,0 +1,72 @@
+name: SAST Scan
+
+on:
+  push:
+    branches: [ main, prince ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  security:
+    name: SonarQube + Snyk Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # ----------------------------
+      # SONARQUBE SCAN
+      # ----------------------------
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORG }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+
+#       # ----------------------------
+#       # SNYK SAST + DEP SCAN
+#       # ----------------------------
+#       - name: Install Snyk CLI
+#         run: npm install -g snyk
+
+#       - name: Authenticate Snyk
+#         run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+#       - name: Snyk Code (SAST)
+#         run: snyk code test --severity-threshold=high
+
+#       - name: Snyk Dependency Scan
+#         run: snyk test --severity-threshold=high
+
+# name: Build
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     types: [opened, synchronize, reopened]
+# jobs:
+#   sonarqube:
+#     name: SonarQube
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+#       - name: SonarQube Scan
+#         uses: SonarSource/sonarqube-scan-action@v6
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
